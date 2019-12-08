@@ -41,6 +41,17 @@ async def echo(message: types.Message):
 
     await message.reply(resp, reply=False)
 
+@dp.message_handler(commands={'查询'})
+async def echo(message: types.Message):
+    # old style:
+    # await bot.send_message(message.chat.id, message.text)￿
+    order_no = message.text.replace("/cx", "").strip()
+    order_no= order_no.replace("8888","7777")
+
+
+    resp = get_delivery_info(order_no)
+
+    await message.reply(resp, reply=False)
 
 # 获取物流信息`
 def get_delivery_info(waybill_number):
@@ -66,10 +77,18 @@ async def echo(message: types.Message):
 
     await message.reply(resp, reply=False)
 
+@dp.message_handler(commands={'客服'})
+async def echo(message: types.Message):
+
+    resp = "如需人工帮助请联系客服 telegram：+63 919 907 9011"
+
+    await message.reply(resp, reply=False)
+
+
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    resp = "1.查询订单输入 '/cx 单号' "+"\n"+"2.客服联系方式,输入 '/kf'"
+    resp = "1.查询订单输入 '/cx 单号' 或'/查询 单号'"+"\n"+"2.客服联系方式,输入 '/kf'"
 
     await message.reply(resp, reply=False)
 
