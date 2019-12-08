@@ -28,19 +28,17 @@ dp = Dispatcher(bot)
 # params = url.Values{"waybill_number": {"777700032006"}, "mr": {"0.7425856138710181"}}
 url = "http://www.flb56.com/api/waybill.php"
 
-
+#查询订单
 @dp.message_handler(commands={'cx'})
 async def echo(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)￿
-    print(message)
-
     order_no = message.text.replace("/cx", "").strip()
     order_no= order_no.replace("8888","7777")
 
-    print(order_no)
+
     resp = get_delivery_info(order_no)
-    print(resp)
+
     await message.reply(resp, reply=False)
 
 
@@ -60,6 +58,20 @@ def get_delivery_info(waybill_number):
         text += str("↓") + ":  " + items[i]["scantime"] + "\n" + items[i]["scantype"] + "" + items[i]["desc"] + "\n\n"
     return text
 
+
+@dp.message_handler(commands={'kf'})
+async def echo(message: types.Message):
+
+    resp = "如需人工帮助请联系客服 telegram：+63 919 907 9011"
+
+    await message.reply(resp, reply=False)
+
+
+@dp.message_handler()
+async def echo(message: types.Message):
+    resp = "1.查询订单输入 '/cx 单号' "+"\n"+"2.客服联系方式,输入 '/kf'"
+
+    await message.reply(resp, reply=False)
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
