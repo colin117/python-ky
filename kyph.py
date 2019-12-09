@@ -28,30 +28,43 @@ dp = Dispatcher(bot)
 # params = url.Values{"waybill_number": {"777700032006"}, "mr": {"0.7425856138710181"}}
 url = "http://www.flb56.com/api/waybill.php"
 
-#查询订单
+
+
+# 查询价格表
+@dp.message_handler(commands={'jg'})
+async def cats(message: types.Message):
+    with open('./jg.jpg', 'rb') as photo:
+        '''
+       价格明细表
+        '''
+
+        await message.reply_photo(photo)
+
+
+# 查询订单
 @dp.message_handler(commands={'cx'})
 async def echo(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)￿
     order_no = message.text.replace("/cx", "").strip()
-    order_no= order_no.replace("8888","7777")
-
+    order_no = order_no.replace("8888", "7777")
 
     resp = get_delivery_info(order_no)
 
     await message.reply(resp, reply=False)
+
 
 @dp.message_handler(commands={'查询'})
 async def echo(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)￿
     order_no = message.text.replace("/cx", "").strip()
-    order_no= order_no.replace("8888","7777")
-
+    order_no = order_no.replace("8888", "7777")
 
     resp = get_delivery_info(order_no)
 
     await message.reply(resp, reply=False)
+
 
 # 获取物流信息`
 def get_delivery_info(waybill_number):
@@ -72,25 +85,24 @@ def get_delivery_info(waybill_number):
 
 @dp.message_handler(commands={'kf'})
 async def echo(message: types.Message):
-
-    resp = "如需人工帮助请联系客服 telegram：+63 919 907 9011"
+    resp = "如需人工帮助请联系客服 telegram：@KYPHKF"
 
     await message.reply(resp, reply=False)
+
 
 @dp.message_handler(commands={'客服'})
 async def echo(message: types.Message):
-
-    resp = "如需人工帮助请联系客服 telegram：+63 919 907 9011"
+    resp = "如需人工帮助请联系客服 telegram：@KYPHKF"
 
     await message.reply(resp, reply=False)
-
 
 
 @dp.message_handler()
 async def echo(message: types.Message):
-    resp = "1.查询订单输入 '/cx 单号' 或'/查询 单号'"+"\n"+"2.客服联系方式,输入 '/kf'"
+    resp = "1.查询订单输入 '/cx 单号' 或'/查询 单号'" + "\n" + "2.客服联系方式,输入 '/kf'"+"\n"+"3.价格明细表,输入'/jg'"
 
     await message.reply(resp, reply=False)
+
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
